@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# Studienarbeit: 3D-Webanwendung mit React Fiber
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Projektbeschreibung
 
-## Available Scripts
+Diese Studienarbeit beschäftigt sich mit der Umsetzung einer 3D-Webanwendung mit **React Fiber**. Ziel ist es, eine interaktive Umgebung zu schaffen, die den DHBW Karlsruhe Campus visualisiert und dem Nutzer eine intuitive Navigation bietet. Das 3D-Modell des Campus wurde mit **Blender** modelliert und in die Webanwendung integriert.
 
-In the project directory, you can run:
+## Funktionen & Features
 
-### `npm start`
+- 3D-Visualisierung des DHBW Karlsruhe Campus
+- Interaktive Navigation innerhalb der Umgebung
+- Nutzung von **React Fiber** für eine performante Darstellung
+- Integration von **Leva** zur Anpassung der Szeneneinstellungen
+- 3D-Modellierung des Campus mit **Blender**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Technologien & Abhängigkeiten
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Frontend:** React, TypeScript
+- **3D-Rendering:** Three.js, React Fiber
+- **Werkzeuge:** Blender für Modellierung, Leva für UI-Controls
 
-### `npm test`
+## Setup & Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Voraussetzungen
 
-### `npm run build`
+- Node.js (>=16.x)
+- React Entwicklungsumgebung
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+# Repository klonen
+git clone https://github.com/dein-repo/studienarbeit.git
+cd studienarbeit
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Abhängigkeiten installieren
+npm install
+```
 
-### `npm run eject`
+### Anwendung starten
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm run dev
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Nutzung der Anwendung
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. **Starten der Anwendung:** Öffne `http://localhost:3000`
+2. **Interaktive Navigation:** Bewege dich durch die 3D-Umgebung.
+3. **Anpassungen:** Nutze **Leva**, um die Szene zu modifizieren.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Entwicklungsanleitung
 
-## Learn More
+- Komponenten befinden sich in `src/components`
+- 3D-Modelle werden in `public/models` verwaltet
+- Szeneneinstellungen sind über `Leva` steuerbar
+- Das 3D-Modell wurde mit **Blender** erstellt und für Three.js exportiert
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Lizenz & Danksagungen
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Dieses Projekt steht unter der **MIT-Lizenz**. Vielen Dank an alle Beteiligten, die zur Forschung und Umsetzung beigetragen haben!
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
