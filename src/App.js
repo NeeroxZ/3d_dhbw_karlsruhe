@@ -6,7 +6,7 @@ import {Searchbar} from "./components/Searchbar";
 
 export default function App() {
   const [selectedRoom, setSelectedRoom] = useState('Lade Räume...');
-  const [action, setAction] = useState('blink');
+  const [action, setAction] = useState('');
   const [roomOptions, setRoomOptions] = useState(['Lade Räume...']);
 
   // Callback vom Modell (DHBWModel), wenn Räume gefunden wurden

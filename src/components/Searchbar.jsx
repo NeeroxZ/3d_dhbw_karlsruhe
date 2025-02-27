@@ -37,8 +37,11 @@ export function Searchbar({
             <div>
                 <label>Aktion:&nbsp;</label>
                 <select value={action} onChange={(e) => setAction(e.target.value)}>
+                    <option value="nothing"></option>
                     <option value="blink">Blink</option>
                     <option value="hide">Hide</option>
+                    <option value="transparent">Transparent</option>
+
                 </select>
             </div>
         </div>

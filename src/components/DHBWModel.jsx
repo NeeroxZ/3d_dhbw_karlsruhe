@@ -65,16 +65,29 @@ export function DHBWModel({ selectedRoom, action, onRoomsExtracted }) {
 
         if (action === 'blink') {
             let blink = true;
+            for (let i = 0; i < rooms.length; i++) {
+                if (!(rooms[i] === selected)) {
+                    rooms[i].material.transparent = true;
+                    rooms[i].material.opacity = 0.5;
+                }
+                console.log(!(rooms[i] === selected));
+            }
             const interval = setInterval(() => {
                 selected.material.emissiveIntensity = blink ? 20 : 1;
                 selected.material.color.set(blink ? '#8B0000' : '#FFFFFF');
                 blink = !blink;
+                console.log("Ich blink")
             }, 300);
 
             const timeout = setTimeout(() => {
                 clearInterval(interval);
                 selected.material.emissiveIntensity = 1;
                 selected.material.color.set('#FFFFFF');
+                for (let i = 0; i < rooms.length; i++) {
+                        rooms[i].material.transparent = false;
+                        rooms[i].material.opacity = 1;
+
+                }
             }, 10000);
 
             return () => {
@@ -86,6 +99,10 @@ export function DHBWModel({ selectedRoom, action, onRoomsExtracted }) {
             };
         } else if (action === 'hide') {
             selected.visible = false;
+
+        } else if (action === 'transparent') {
+            selected.material.transparent = true;
+            selected.material.opacity = 0.5;
         }
     }, [selectedRoom, action, rooms]);
 
