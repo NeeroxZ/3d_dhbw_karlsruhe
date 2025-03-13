@@ -1,113 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useGLTF } from '@react-three/drei';
-import * as THREE from 'three';
+import React from "react";
+import { useLoadModel } from "../hooks/useLoadModel";
+import { useRoomActions } from "../hooks/useRoomActions";
+import {useGLTF} from "@react-three/drei";
 
 export function DHBWModel({ selectedRoom, action, onRoomsExtracted }) {
-    const MODEL_PATH = '/model/dhbw_modell2102.glb';
-    const { scene } = useGLTF(MODEL_PATH);
+    const MODEL_PATH = "./model/dhbw_modell_1303.glb";
 
-    // Räume, die wir gefunden haben
-    const [rooms, setRooms] = useState([]);
-    const roomsLoadedRef = useRef(false);
+    // Modell laden und Räume extrahieren
+    const { scene, rooms } = useLoadModel(MODEL_PATH, onRoomsExtracted);
 
-    // 1) Räume aus dem Modell nur EINMAL extrahieren
-    useEffect(() => {
-        if (!scene) return;
-        if (roomsLoadedRef.current) return;
-        roomsLoadedRef.current = true;
-
-        console.log('⏳ Extrahiere Räume aus Szene...');
-
-        const foundRooms = [];
-        scene.traverse((object) => {
-            if (object.isMesh) {
-                // Material klonen für getrennte Farb-Effekte
-                object.material = object.material.clone();
-                object.material.side = THREE.DoubleSide;
-                object.castShadow = true;
-                object.receiveShadow = true;
-
-                // Beispielhaft: Alles sammeln
-                foundRooms.push(object);
-            }
-        });
-
-        // Räume speichern
-        setRooms(foundRooms);
-
-        // Nur die Namen weitergeben
-        const roomNames = foundRooms.map((r) => r.name);
-        console.log('✅ Räume extrahiert:', roomNames);
-
-        // Weiterleitung an Parent
-        if (typeof onRoomsExtracted === 'function') {
-            onRoomsExtracted(roomNames);
-        }
-    }, [scene, onRoomsExtracted]);
-
-    // 2) Blinken / Verstecken
-    useEffect(() => {
-        // Erstmal alles zurücksetzen
-        rooms.forEach((room) => {
-            room.material.emissive.set('#000000');
-            room.material.emissiveIntensity = 1;
-            room.material.color.set('#FFFFFF');
-            room.visible = true;
-        });
-
-        const selected = rooms.find((r) => r.name === selectedRoom);
-        if (!selected) {
-            console.log('❌ Gewählter Raum nicht gefunden:', selectedRoom);
-            return;
-        }
-
-        console.log('🔍 SELECTED ROOM:', selectedRoom, 'ACTION:', action);
-
-        if (action === 'blink') {
-            let blink = true;
-            for (let i = 0; i < rooms.length; i++) {
-                if (!(rooms[i] === selected)) {
-                    rooms[i].material.transparent = true;
-                    rooms[i].material.opacity = 0.5;
-                }
-                console.log(!(rooms[i] === selected));
-            }
-            const interval = setInterval(() => {
-                selected.material.emissiveIntensity = blink ? 20 : 1;
-                selected.material.color.set(blink ? '#8B0000' : '#FFFFFF');
-                blink = !blink;
-                console.log("Ich blink")
-            }, 300);
-
-            const timeout = setTimeout(() => {
-                clearInterval(interval);
-                selected.material.emissiveIntensity = 1;
-                selected.material.color.set('#FFFFFF');
-                for (let i = 0; i < rooms.length; i++) {
-                        rooms[i].material.transparent = false;
-                        rooms[i].material.opacity = 1;
-
-                }
-            }, 10000);
-
-            return () => {
-                clearInterval(interval);
-                clearTimeout(timeout);
-                selected.material.emissive.set('#000000');
-                selected.material.emissiveIntensity = 1;
-                selected.material.color.set('#FFFFFF');
-            };
-        } else if (action === 'hide') {
-            selected.visible = false;
-
-        } else if (action === 'transparent') {
-            selected.material.transparent = true;
-            selected.material.opacity = 0.5;
-        }
-    }, [selectedRoom, action, rooms]);
+    // Aktionen auf die Räume anwenden
+    useRoomActions(rooms, selectedRoom, action);
 
     return <primitive object={scene} />;
 }
 
-// Dieses Preload ist optional, falls mehrere Komponenten das Model laden.
-useGLTF.preload('/model/dhbw_modell2102.glb');
+// Preload für Performance-Optimierung
+useGLTF.preload("./model/dhbw_modell_1303.glb");

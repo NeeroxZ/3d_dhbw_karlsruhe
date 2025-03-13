@@ -1,12 +1,14 @@
 import React from 'react';
 
 export function Searchbar({
-                               roomOptions,
-                               selectedRoom,
-                               setSelectedRoom,
-                               action,
-                               setAction,
-                           }) {
+                              searchQuery,
+                              setSearchQuery,
+                              filteredRooms,
+                              selectedRoom,
+                              setSelectedRoom,
+                              action,
+                              setAction
+                          }) {
     return (
         <div
             style={{
@@ -21,15 +23,34 @@ export function Searchbar({
         >
             <h3>Eigenes Menü</h3>
 
+            {/* Suchfeld */}
+            <div style={{ marginBottom: '1rem' }}>
+                <label>Raum suchen:&nbsp;</label>
+                <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Raumnamen eingeben..."
+                />
+            </div>
+
             {/* Räume-Auswahl */}
             <div style={{ marginBottom: '1rem' }}>
                 <label>Raum:&nbsp;</label>
-                <select value={selectedRoom} onChange={(e) => setSelectedRoom(e.target.value)}>
-                    {roomOptions.map((roomName) => (
-                        <option key={roomName} value={roomName}>
-                            {roomName}
-                        </option>
-                    ))}
+                <select
+                    value={selectedRoom}
+                    onChange={(e) => setSelectedRoom(e.target.value)}
+                    disabled={filteredRooms.length === 0}
+                >
+                    {filteredRooms.length > 0 ? (
+                        filteredRooms.map((roomName) => (
+                            <option key={roomName} value={roomName}>
+                                {roomName}
+                            </option>
+                        ))
+                    ) : (
+                        <option value="">Kein Raum gefunden</option>
+                    )}
                 </select>
             </div>
 
@@ -41,7 +62,6 @@ export function Searchbar({
                     <option value="blink">Blink</option>
                     <option value="hide">Hide</option>
                     <option value="transparent">Transparent</option>
-
                 </select>
             </div>
         </div>

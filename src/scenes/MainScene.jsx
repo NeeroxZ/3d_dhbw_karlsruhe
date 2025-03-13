@@ -4,6 +4,7 @@ import { OrbitControls, ContactShadows } from '@react-three/drei';
 
 import {DirectionalLightWithHelper, PointLightWithHelper} from "../components/Lights";
 import {DHBWModel} from "../components/DHBWModel";
+import { LoadingScreen } from './LoadingScreen';
 
 export function MainScene({ selectedRoom, action, onRoomsExtracted }) {
     return (
@@ -13,30 +14,29 @@ export function MainScene({ selectedRoom, action, onRoomsExtracted }) {
             shadows
             gl={{ antialias: true }}
         >
-            {/* Koordinatensystem */}
-            <axesHelper args={[500]} />
+            <Suspense fallback={<LoadingScreen />}>
+                {/* Koordinatensystem */}
+                <axesHelper args={[500]} />
 
-            <ambientLight intensity={0.2} />
+                <ambientLight intensity={0.2} />
+                <DirectionalLightWithHelper
+                    position={[-100, 40, -120]}
+                    intensity={1.1}
+                    castShadow
+                    shadow-mapSize-width={1024}
+                    shadow-mapSize-height={1024}
+                />
+                <DirectionalLightWithHelper
+                    position={[20, 40, 120]}
+                    intensity={1.1}
+                    castShadow
+                    shadow-mapSize-width={1024}
+                    shadow-mapSize-height={1024}
+                />
 
-            <DirectionalLightWithHelper
-                position={[-100, 40, -120]}
-                intensity={1.1}
-                castShadow
-                shadow-mapSize-width={1024}
-                shadow-mapSize-height={1024}
-            />
-            <DirectionalLightWithHelper
-                position={[20, 40, 120]}
-                intensity={1.1}
-                castShadow
-                shadow-mapSize-width={1024}
-                shadow-mapSize-height={1024}
-            />
+                <PointLightWithHelper position={[-100, 40, 120]} intensity={0.8} />
+                <PointLightWithHelper position={[-100, 4, 20]} intensity={0.8} />
 
-            <PointLightWithHelper position={[-100, 40, 120]} intensity={0.8} />
-            <PointLightWithHelper position={[-100, 4, 20]} intensity={0.8} />
-
-            <Suspense fallback={null}>
                 <DHBWModel
                     selectedRoom={selectedRoom}
                     action={action}
