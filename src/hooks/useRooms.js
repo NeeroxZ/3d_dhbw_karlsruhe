@@ -2,7 +2,12 @@ import { useEffect, useState, useRef } from "react";
 import * as THREE from "three";
 
 // Begriffe, die ignoriert werden sollen
-const EXCLUDED_NAMES = ["säule", "decke", "träger", "wand", "fenster", "würfel", "fenste", "küche"];
+const EXCLUDED_NAMES = ["säule",
+    "decke",
+    "träger",
+    "wand",
+    "küche"
+];
 
 export function useRooms(scene, onRoomsExtracted) {
     const [rooms, setRooms] = useState([]);
@@ -30,7 +35,6 @@ export function useRooms(scene, onRoomsExtracted) {
                     normalizedName: originalName.replace(/[_\-\s]/g, ""),
                     mesh: object,
                 });
-                console.log(`💕💕💕💕 Raum: ${originalName.replace(/[_\-\s]/g, "")}`);
 
 
                 object.material = object.material.clone();

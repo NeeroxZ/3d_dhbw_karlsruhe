@@ -15,7 +15,7 @@ function GrassGround() {
     grassTexture.magFilter = THREE.LinearFilter;
 
     return (
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]} receiveShadow>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -2, 0]} receiveShadow>
             <planeGeometry args={[200, 200]} />
             <meshStandardMaterial map={grassTexture} />
         </mesh>
@@ -47,16 +47,19 @@ export function MainScene({ selectedRoom, action, onRoomsExtracted }) {
                     shadow-mapSize={[2048, 2048]}
                     shadow-radius={5}
                 />
-                {/* 🔥 Sekundäres Fülllicht */}
+                {/* 🔥 Sekundäres Fülllicht
                 <directionalLight position={[-30, 20, 50]} intensity={0.7} />
-
-                {/* 🔥 Punktlichter mit Lichtabfall */}
+                */}
+                {/* 🔥 Punktlichter mit Lichtabfall
                 <pointLight position={[0, 10, 10]} intensity={1} distance={50} decay={2} color={"#ffaa55"} />
                 <pointLight position={[-50, 20, 20]} intensity={0.5} distance={60} decay={2} color={"#55aaff"} />
 
+                */}
+                <pointLight position={[0, 0, 0]} intensity={0.5} distance={60} decay={2} color={"#55aaff"} />
+
                 {/* 🔹 Grasboden */}
                 <GrassGround />
-
+                <Environment preset="park" />
                 {/* 🔹 3D-Modell */}
                 <DHBWModel selectedRoom={selectedRoom} action={action} onRoomsExtracted={onRoomsExtracted} />
             </Suspense>
