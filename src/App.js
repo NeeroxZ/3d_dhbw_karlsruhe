@@ -4,18 +4,17 @@ import { Searchbar } from "./components/Searchbar";
 import { useRoomSearch } from "./hooks/useRoomSearch";
 
 export default function App() {
-    const [selectedRoom, setSelectedRoom] = useState('');
+    const [selectedRoom, setSelectedRoom] = useState(null); // Speichert das Raum-Objekt, nicht nur den Namen
     const [action, setAction] = useState('');
-    const [roomOptions, setRoomOptions] = useState([]);
+    const [roomOptions, setRoomOptions] = useState([]); // Enthält nun komplette Raum-Objekte
 
-    // Nutzt unseren Custom Hook
+    // Nutzt unseren Custom Hook für die Suche
     const { searchQuery, setSearchQuery, filteredRooms } = useRoomSearch(roomOptions);
 
     // Callback vom Modell (DHBWModel), wenn Räume gefunden wurden
     const handleRoomsExtracted = (rooms) => {
-        console.log('🏠 Gefundene Räume:', rooms);
-        setRoomOptions(rooms.length > 0 ? rooms : ['Keine Räume gefunden']);
-        setSelectedRoom(rooms.length > 0 ? rooms[0] : '');
+        setRoomOptions(rooms.length > 0 ? rooms : []);
+        setSelectedRoom(rooms.length > 0 ? rooms[0] : null); // Direkt erstes Raum-Objekt setzen
     };
 
     return (
@@ -24,7 +23,7 @@ export default function App() {
             <Searchbar
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
-                filteredRooms={filteredRooms}
+                filteredRooms={filteredRooms} // Enthält jetzt vollständige Raum-Objekte
                 selectedRoom={selectedRoom}
                 setSelectedRoom={setSelectedRoom}
                 action={action}
@@ -33,7 +32,7 @@ export default function App() {
 
             {/* 3D-Szene */}
             <MainScene
-                selectedRoom={selectedRoom}
+                selectedRoom={selectedRoom?.name} // Nur den Namen an MainScene übergeben
                 action={action}
                 onRoomsExtracted={handleRoomsExtracted}
             />

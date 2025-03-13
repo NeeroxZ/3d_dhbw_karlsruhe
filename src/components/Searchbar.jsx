@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export function Searchbar({
                               searchQuery,
@@ -7,24 +7,22 @@ export function Searchbar({
                               selectedRoom,
                               setSelectedRoom,
                               action,
-                              setAction
+                              setAction,
                           }) {
     return (
-        <div
-            style={{
-                position: 'absolute',
-                top: 10,
-                left: 10,
-                background: '#f8f8f8',
-                padding: 10,
-                zIndex: 9999,
-                border: '1px solid #ccc',
-            }}
-        >
+        <div style={{
+            position: "absolute",
+            top: 10,
+            left: 10,
+            background: "#f8f8f8",
+            padding: 10,
+            zIndex: 9999,
+            border: "1px solid #ccc",
+        }}>
             <h3>Eigenes Menü</h3>
 
             {/* Suchfeld */}
-            <div style={{ marginBottom: '1rem' }}>
+            <div style={{ marginBottom: "1rem" }}>
                 <label>Raum suchen:&nbsp;</label>
                 <input
                     type="text"
@@ -35,17 +33,20 @@ export function Searchbar({
             </div>
 
             {/* Räume-Auswahl */}
-            <div style={{ marginBottom: '1rem' }}>
+            <div style={{ marginBottom: "1rem" }}>
                 <label>Raum:&nbsp;</label>
                 <select
-                    value={selectedRoom}
-                    onChange={(e) => setSelectedRoom(e.target.value)}
+                    value={selectedRoom?.name || ""}
+                    onChange={(e) => {
+                        const selected = filteredRooms.find((r) => r.name === e.target.value);
+                        setSelectedRoom(selected || null);
+                    }}
                     disabled={filteredRooms.length === 0}
                 >
                     {filteredRooms.length > 0 ? (
-                        filteredRooms.map((roomName) => (
-                            <option key={roomName} value={roomName}>
-                                {roomName}
+                        filteredRooms.map((room) => (
+                            <option key={room.id} value={room.name}>
+                                {room.name} ({room.wing}-{room.floor})
                             </option>
                         ))
                     ) : (
