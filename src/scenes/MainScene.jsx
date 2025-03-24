@@ -60,6 +60,7 @@ export function MainScene({ selectedRoom, action, onRoomsExtracted }) {
                 {/* 🔹 Grasboden */}
                 <GrassGround />
                 <Environment preset="park" />
+
                 {/* 🔹 3D-Modell */}
                 <DHBWModel selectedRoom={selectedRoom} action={action} onRoomsExtracted={onRoomsExtracted} />
             </Suspense>

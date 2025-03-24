@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import { useLoadModel } from "../hooks/useLoadModel";
-import { useRooms } from "../hooks/useRooms";
-import { useRoomActions } from "../hooks/useRoomActions";
+import React, {useEffect} from "react";
+import {useLoadModel} from "../hooks/useLoadModel";
+import {useRooms} from "../hooks/useRooms";
+import {useRoomActions} from "../hooks/useRoomActions";
 import * as THREE from "three";
 import {useTexture} from "@react-three/drei";
 
-export function DHBWModel({ selectedRoom, action, onRoomsExtracted }) {
-    const MODEL_PATH = "./model/dhbw_modell.glb";
-    const { scene } = useLoadModel(MODEL_PATH);
-    const { rooms } = useRooms(scene, onRoomsExtracted);
+export function DHBWModel({selectedRoom, action, onRoomsExtracted}) {
+    const MODEL_PATH = "./model/dhbw_modell2.glb";
+    const {scene} = useLoadModel(MODEL_PATH);
+    const {rooms} = useRooms(scene, onRoomsExtracted);
     // 🔹 Lade die Putz-Texturen
     const [wallAlbedo, wallNormal, wallRoughness, wallDisplacement] = useTexture([
         "textures/wall/painted_plaster_color.jpg",
@@ -37,22 +37,22 @@ export function DHBWModel({ selectedRoom, action, onRoomsExtracted }) {
                     object.name.toLowerCase().includes("cube") ||
                     object.name.toLowerCase().includes("glass") ||
                     object.name.toLowerCase().includes("glass") ||
-                    object.name.toLowerCase().includes("würfel068_9") ||
+                    object.name.toLowerCase().includes("würfel") ||
                     object.name.toLowerCase().includes("fenster")
                 ) {
                     object.material.transparent = true;
                     object.material.opacity = 0.5;  // 🔥 Fast klares Glas
-                    //object.material.color.set("#87CEEB");  // 🔹 Leicht bläuliches Glas
+                    object.material.color.set("#87CEEB");  // 🔹 Leicht bläuliches Glas
                     object.material.roughness = 0.5;  // 🔥 Wenig Lichtstreuung für ein klares Fenster
-                    object.material.metalness = 0.5;  // 🔥 Spiegelungen aktivieren
-                    //object.material.side = THREE.DoubleSide;  // 🔥 Fenster von innen und außen sichtbar
+                    object.material.metalness = 0.9;  // 🔥 Spiegelungen aktivieren
+                    object.material.side = THREE.DoubleSide;  // 🔥 Fenster von innen und außen sichtbar
                     object.material.depthWrite = false;  // 🔥 Stellt sicher, dass Objekte dahinter sichtbar bleiben
                     object.material.blending = THREE.NormalBlending;  // 🔥 Standard-Glas-Blending
                     object.material.refractionRatio = 0.98; // 🔥 Falls Reflektionen verwendet werden sollen
 
 
                     console.log(`✅ Fenster gefunden: ${object.name}, Transparenz angewendet!`);
-                }else{
+                } else {
                     object.material.side = THREE.DoubleSide;
                     object.castShadow = true;
                     object.receiveShadow = true;
@@ -76,5 +76,5 @@ export function DHBWModel({ selectedRoom, action, onRoomsExtracted }) {
     // Wende Aktionen auf Räume an
     useRoomActions(rooms, selectedRoom, action);
 
-    return <primitive object={scene} />;
+    return <primitive object={scene}/>;
 }
