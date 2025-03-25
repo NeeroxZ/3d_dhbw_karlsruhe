@@ -1,12 +1,19 @@
-import React, { Suspense } from 'react';
+import React, {JSX, Suspense} from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, ContactShadows, Sky, useTexture, Environment } from '@react-three/drei';
 import { DHBWModel } from "../components/DHBWModel";
 import { LoadingScreen } from './LoadingScreen';
 import * as THREE from "three";
 
+interface MainSceneProps {
+    selectedRoom: string;
+    action: string;
+    // Falls du die Room-Struktur importierst, könntest du hier den konkreten Typ angeben:
+    onRoomsExtracted: (rooms: any[]) => void;
+}
+
 // 🔹 Grasboden als extra Komponente
-function GrassGround() {
+function GrassGround(): JSX.Element {
     const grassTexture = useTexture("textures/asphalt.jpg");
     grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
     grassTexture.repeat.set(10, 10);
@@ -22,7 +29,7 @@ function GrassGround() {
     );
 }
 
-export function MainScene({ selectedRoom, action, onRoomsExtracted }) {
+export function MainScene({ selectedRoom, action, onRoomsExtracted }: MainSceneProps): JSX.Element {
     return (
         <Canvas
             camera={{ position: [-70, 80, 220], fov: 45 }}
@@ -47,14 +54,7 @@ export function MainScene({ selectedRoom, action, onRoomsExtracted }) {
                     shadow-mapSize={[2048, 2048]}
                     shadow-radius={5}
                 />
-                {/* 🔥 Sekundäres Fülllicht
-                <directionalLight position={[-30, 20, 50]} intensity={0.7} />
-                */}
-                {/* 🔥 Punktlichter mit Lichtabfall
-                <pointLight position={[0, 10, 10]} intensity={1} distance={50} decay={2} color={"#ffaa55"} />
-                <pointLight position={[-50, 20, 20]} intensity={0.5} distance={60} decay={2} color={"#55aaff"} />
-
-                */}
+                {/* Beispiel für weitere Lichtquellen */}
                 <pointLight position={[0, 0, 0]} intensity={0.5} distance={60} decay={2} color={"#55aaff"} />
 
                 {/* 🔹 Grasboden */}
@@ -62,7 +62,11 @@ export function MainScene({ selectedRoom, action, onRoomsExtracted }) {
                 <Environment preset="park" />
 
                 {/* 🔹 3D-Modell */}
-                <DHBWModel selectedRoom={selectedRoom} action={action} onRoomsExtracted={onRoomsExtracted} />
+                <DHBWModel
+                    selectedRoom={selectedRoom}
+                    action={action}
+                    onRoomsExtracted={onRoomsExtracted}
+                />
             </Suspense>
 
             {/* 🔹 Schatten unter Objekten */}

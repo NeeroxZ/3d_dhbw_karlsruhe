@@ -1,13 +1,25 @@
 import { useState, useMemo } from "react";
 
+export interface Room {
+    name: string;
+    wing?: string;
+    floor?: string;
+    room?: string; // Raumnummer oder Bezeichnung
+    normalizedName?: string;
+}
+
 // Funktion zur Normalisierung der Suchanfrage
-const normalizeQuery = (query) => {
+const normalizeQuery = (query: string | undefined): string => {
     return query?.replace(/[_\-\s]/g, "").toLowerCase() || "";
 };
 
 // Hook für die erweiterte Suche
-export function useRoomSearch(roomList) {
-    const [searchQuery, setSearchQuery] = useState("");
+export function useRoomSearch(roomList: Room[]): {
+    searchQuery: string;
+    setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+    filteredRooms: Room[];
+} {
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
     const filteredRooms = useMemo(() => {
         if (!searchQuery) return roomList;
@@ -15,7 +27,8 @@ export function useRoomSearch(roomList) {
         const normalizedQuery = normalizeQuery(searchQuery);
 
         return roomList.filter((room) => {
-            if (!room || !room.name) return false; // Sicherstellen, dass `room` existiert
+            // Sicherstellen, dass room existiert und einen Namen hat
+            if (!room || !room.name) return false;
 
             const { wing, floor, room: roomName, normalizedName } = room;
 
@@ -32,9 +45,11 @@ export function useRoomSearch(roomList) {
             if (roomName?.toLowerCase().includes(normalizedQuery)) return true;
 
             // Falls "C3" gesucht wird, muss es alle Räume in Flügel C, Stockwerk 3 finden
-            if (normalizedQuery.length === 2 &&
+            if (
+                normalizedQuery.length === 2 &&
                 normalizedQuery[0] === wing?.toLowerCase() &&
-                normalizedQuery[1] === floor?.toLowerCase()) {
+                normalizedQuery[1] === floor?.toLowerCase()
+            ) {
                 return true;
             }
 

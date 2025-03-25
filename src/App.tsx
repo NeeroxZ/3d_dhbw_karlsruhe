@@ -1,22 +1,27 @@
-import React, { useState } from 'react';
-import { MainScene } from "./scenes/MainScene";
+import React, {JSX, useState} from 'react';
 import { Searchbar } from "./components/Searchbar";
 import { useRoomSearch } from "./hooks/useRoomSearch";
+import {MainScene} from "./scenes/MainScene";
+import {Room} from "./hooks/useRooms"; // oder aus dem entsprechenden Pfad
 
-export default function App() {
-    const [selectedRoom, setSelectedRoom] = useState(null); // Speichert das Raum-Objekt, nicht nur den Namen
-    const [action, setAction] = useState('');
-    const [roomOptions, setRoomOptions] = useState([]); // Enthält nun komplette Raum-Objekte
+export default function App(): JSX.Element {
+    // Speichert das Raum-Objekt, nicht nur den Namen
+    const [selectedRoom, setSelectedRoom] = useState<Room | null>();
+    const [action, setAction] = useState<string>('');
+    // Enthält nun komplette Raum-Objekte
+    const [roomOptions, setRoomOptions] = useState<Room[]>([]);
 
     // Nutzt unseren Custom Hook für die Suche
     const { searchQuery, setSearchQuery, filteredRooms } = useRoomSearch(roomOptions);
 
     // Callback vom Modell (DHBWModel), wenn Räume gefunden wurden
-    const handleRoomsExtracted = (rooms) => {
+    const handleRoomsExtracted = (rooms: Room[]): void => {
         setRoomOptions(rooms.length > 0 ? rooms : []);
         setSelectedRoom(rooms.length > 0 ? rooms[0] : null); // Direkt erstes Raum-Objekt setzen
     };
 
+    // @ts-ignore
+    // @ts-ignore
     return (
         <>
             {/* Menü mit Suchfunktion */}
@@ -32,7 +37,7 @@ export default function App() {
 
             {/* 3D-Szene */}
             <MainScene
-                selectedRoom={selectedRoom?.name} // Nur den Namen an MainScene übergeben
+                selectedRoom={selectedRoom?.name ?? ""} // Falls kein Raum ausgewählt, übergebe einen leeren String
                 action={action}
                 onRoomsExtracted={handleRoomsExtracted}
             />
