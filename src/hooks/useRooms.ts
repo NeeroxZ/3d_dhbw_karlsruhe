@@ -21,11 +21,6 @@ export interface Room {
     mesh: THREE.Mesh;
 }
 
-interface UseRoomsProps {
-    scene: THREE.Scene | null;
-    onRoomsExtracted?: (rooms: Room[]) => void;
-}
-
 export function useRooms(
     scene: Group<Object3DEventMap>,
     onRoomsExtracted?: (rooms: Room[]) => void
@@ -47,7 +42,6 @@ export function useRooms(
                 const originalName = mesh.name.toLowerCase();
 
                 if (EXCLUDED_NAMES.some((term) => originalName.includes(term))) {
-//                    console.log(`❌ Ignorierter Raum: ${originalName}`);
                     return;
                 }
 
@@ -87,7 +81,7 @@ export function useRooms(
         }
 
     //    console.log("✅ Räume erfolgreich extrahiert:", foundRooms.length);
-    }, [scene, onRoomsExtracted]);
+    }, []);
 
     return { rooms };
 }

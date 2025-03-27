@@ -4,6 +4,7 @@ import { OrbitControls, ContactShadows, Sky, useTexture, Environment } from '@re
 import { DHBWModel } from "../components/DHBWModel";
 import { LoadingScreen } from './LoadingScreen';
 import * as THREE from "three";
+import {GrassGround} from "../components/GrassGround";
 
 interface MainSceneProps {
     selectedRoom: string;
@@ -12,22 +13,6 @@ interface MainSceneProps {
     onRoomsExtracted: (rooms: any[]) => void;
 }
 
-// 🔹 Grasboden als extra Komponente
-function GrassGround(): JSX.Element {
-    const grassTexture = useTexture("textures/asphalt.jpg");
-    grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
-    grassTexture.repeat.set(10, 10);
-    grassTexture.anisotropy = 16;
-    grassTexture.minFilter = THREE.LinearMipMapLinearFilter;
-    grassTexture.magFilter = THREE.LinearFilter;
-
-    return (
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -2, 0]} receiveShadow>
-            <planeGeometry args={[200, 200]} />
-            <meshStandardMaterial map={grassTexture} />
-        </mesh>
-    );
-}
 
 export function MainScene({ selectedRoom, action, onRoomsExtracted }: MainSceneProps): JSX.Element {
     return (
@@ -59,7 +44,7 @@ export function MainScene({ selectedRoom, action, onRoomsExtracted }: MainSceneP
 
                 {/* 🔹 Grasboden */}
                 <GrassGround />
-                <Environment preset="park" />
+                <Environment preset="park" backgroundIntensity={0.1} />
 
                 {/* 🔹 3D-Modell */}
                 <DHBWModel

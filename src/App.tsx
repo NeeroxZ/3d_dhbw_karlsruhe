@@ -5,6 +5,7 @@ import {MainScene} from "./scenes/MainScene";
 import {Room} from "./hooks/useRooms"; // oder aus dem entsprechenden Pfad
 
 export default function App(): JSX.Element {
+
     // Speichert das Raum-Objekt, nicht nur den Namen
     const [selectedRoom, setSelectedRoom] = useState<Room | null>();
     const [action, setAction] = useState<string>('');

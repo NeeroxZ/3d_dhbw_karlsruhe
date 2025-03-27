@@ -11,6 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
 .searchbar-container,
 .searchbar-container * {
   box-sizing: border-box;
@@ -65,19 +66,6 @@ code {
 .searchbar-select:focus {
   border-color: #007AFF; /* iOS-blauer Fokus */
 }
-/* Globale Box-Sizing-Einstellung */
-* {
-  box-sizing: border-box;
-}
-
-/* Wrapper, in dem sich der Button und das Panel befinden */
-.searchbar-wrapper {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 9999;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
 
 /* Toggle-Button (Hamburger-Menü) */
 .searchbar-toggle {
@@ -95,67 +83,6 @@ code {
 .searchbar-toggle:hover,
 .searchbar-toggle:focus {
   background-color: #f0f0f0;
-  border-color: #007aff;
-}
-
-/* Container der Suchleiste */
-.searchbar-container {
-  margin-top: 10px; /* Platz zwischen Button und Panel */
-  width: 250px;
-  background: #fff;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-
-  /* Transition für sanftes Ein-/Ausblenden */
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease-in-out;
-}
-
-/* Wenn die Leiste geöffnet ist, erhält sie eine größere max-height.
-   Du kannst 300px anpassen, je nach Inhalt. */
-.searchbar-container.open {
-  max-height: 300px;
-}
-
-/* Überschrift */
-.searchbar-title {
-  margin: 0 0 10px;
-  text-align: center;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-/* Gruppen und Labels */
-.searchbar-group {
-  margin-bottom: 12px;
-}
-
-.searchbar-label {
-  display: block;
-  margin-bottom: 4px;
-  font-weight: 500;
-  font-size: 0.9rem;
-  color: #333;
-}
-
-/* Eingabefelder & Selects */
-.searchbar-input,
-.searchbar-select {
-  width: 100%;
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 0.9rem;
-  background: #fff;
-  outline: none;
-  transition: border-color 0.3s;
-}
-
-/* Fokus-Effekt */
-.searchbar-input:focus,
-.searchbar-select:focus {
   border-color: #007aff;
 }
 

@@ -4,6 +4,8 @@ import { useTexture } from "@react-three/drei";
 import { useLoadModel } from "../hooks/useLoadModel";
 import { useRooms } from "../hooks/useRooms";
 import { useRoomActions } from "../hooks/useRoomActions";
+import {useWallTexture} from "../hooks/useWallTexture";
+import {applyGenericMaterial, applyWindowMaterial, cloneMeshMaterial} from "../utils/materialUtils";
 
 
 interface DHBWModelProps {
@@ -13,17 +15,13 @@ interface DHBWModelProps {
 }
 
 export function DHBWModel({ selectedRoom, action, onRoomsExtracted }: DHBWModelProps): JSX.Element {
-    const MODEL_PATH = "./model/dhbw_modell2.glb";
+    const MODEL_PATH = "./model/final_model.glb";
     const { scene } = useLoadModel(MODEL_PATH);
     const { rooms } = useRooms(scene, onRoomsExtracted);
 
     // 🔹 Lade die Putz-Texturen
-    const [wallAlbedo, wallNormal, wallRoughness, wallDisplacement] = useTexture([
-        "textures/wall/painted_plaster_color.jpg",
-        "textures/wall/painted_plaster_normal.jpg",
-        "textures/wall/painted_plaster_roughness.jpg",
-        "textures/wall/painted_plaster_displacement.jpg",
-    ]);
+
+    const { wallAlbedo, wallNormal, wallRoughness, wallDisplacement } = useWallTexture();
 
     // 🔹 Texturen für Wiederholung & Optik einstellen
     [wallAlbedo, wallNormal, wallRoughness, wallDisplacement].forEach((texture) => {
@@ -36,74 +34,33 @@ export function DHBWModel({ selectedRoom, action, onRoomsExtracted }: DHBWModelP
     useEffect(() => {
         if (!scene) return;
 
-        //console.log("⏳ Suche nach Wänden für Putztextur...");
         scene.traverse((object) => {
-            if ((object as THREE.Mesh).isMesh) {
-                const mesh = object as THREE.Mesh;
+            if (!(object as THREE.Mesh).isMesh) return;
+            const mesh = object as THREE.Mesh;
 
-                // Material klonen: je nachdem ob es sich um ein Array oder ein einzelnes Material handelt
-                if (Array.isArray(mesh.material)) {
-                    mesh.material = mesh.material.map((mat) => mat.clone());
-                } else {
-                    mesh.material = mesh.material.clone();
-                }
+            // Material klonen
+            cloneMeshMaterial(mesh);
 
-                const nameLower = mesh.name.toLowerCase();
-                if (
-                    nameLower.includes("cube") ||
-                    nameLower.includes("glass") ||
-                    nameLower.includes("würfel") ||
-                    nameLower.includes("fenster")
-                ) {
-                    // Falls Material ein Array ist, iteriere über alle Elemente
-                    if (Array.isArray(mesh.material)) {
-                        mesh.material.forEach((mat) => {
-                            const material = mesh.material as any;
-                            material.transparent = true;
-                            material.opacity = 0.5;
-                            material.color.set("#87CEEB");
-                            material.roughness = 0.5;
-                            material.metalness = 0.9;
-                            material.side = THREE.DoubleSide;
-                            material.depthWrite = false;
-                            material.blending = THREE.NormalBlending;
-                            material.refractionRatio = 0.98;
-                        });
-                    } else {
-                        const material = mesh.material as any;
-                        material.transparent = true;
-                        material.opacity = 0.5;
-                        material.color.set("#87CEEB");
-                        material.roughness = 0.5;
-                        material.metalness = 0.9;
-                        material.side = THREE.DoubleSide;
-                        material.depthWrite = false;
-                        material.blending = THREE.NormalBlending;
-                        material.refractionRatio = 0.98;
-                    }
-                } else {
-                    // Für alle anderen Objekte
-                    if (Array.isArray(mesh.material)) {
-                        mesh.material.forEach((mat) => {
-                            mat.side = THREE.DoubleSide;
-                        });
-                    } else {
-                        mesh.material.side = THREE.DoubleSide;
-                    }
-                    mesh.castShadow = true;
-                    mesh.receiveShadow = true;
-
-                    // Setze hier ggf. weitere Texturzuweisungen, z. B.:
-                    // mesh.material.map = wallAlbedo;
-                    // mesh.material.normalMap = wallNormal;
-                    // mesh.material.roughnessMap = wallRoughness;
-                    // mesh.material.roughness = 0.8;
-                }
+            const nameLower = mesh.name.toLowerCase();
+            console.log(nameLower);
+            const isWindow =
+                nameLower.includes("cube") ||
+                nameLower.includes("glass") ||
+                nameLower.includes("würfel") ||
+                nameLower.includes("037_");
+            console.log(isWindow);
+            if (isWindow) {
+                // Fenster-spezifische Einstellungen
+                applyWindowMaterial(mesh.material,true);
+            } else {
+                // Generelle Einstellungen für andere Objekte
+                applyGenericMaterial(mesh);
+                // Hier kannst du auch zusätzliche Texturzuweisungen machen, z. B.:
+                // (mesh.material as any).map = wallAlbedo;
+                // (mesh.material as any).normalMap = wallNormal;
             }
         });
-
     }, [scene, wallAlbedo, wallNormal, wallRoughness, wallDisplacement]);
-
     // Debugging: Zeige extrahierte Räume in der Konsole an
     useEffect(() => {
        // console.log("Extrahierte Räume:", rooms);
